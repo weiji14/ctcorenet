@@ -1,0 +1,7 @@
+name: ctcorenet
+channels:
+  - conda-forge
+dependencies:
+  - conda-forge::black=21.7b0[md5=48f2030aa3fcd4652046d49f354085b7]
+  - conda-forge::jupyterlab=3.1.0[md5=e2974e13411e609badb7b7f6b174d465]
+  - conda-forge::python=3.8.10[md5=69f7d6ef1f00c3a109b1b06279e6d6a9]

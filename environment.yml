@@ -5,7 +5,8 @@ channels:
   - pytorch
 dependencies:
   - conda-forge::black=21.7b0[md5=48f2030aa3fcd4652046d49f354085b7]
-  - conda-forge::jupyterlab=3.1.0[md5=e2974e13411e609badb7b7f6b174d465]
+  - conda-forge::jupyterlab=3.1.1[md5=b067fffc2db14035f8b528fbc22ea927]
   - conda-forge::python=3.8.10[md5=69f7d6ef1f00c3a109b1b06279e6d6a9]
   - pytorch::pytorch=1.9.0[md5=ecab10144540d49a514f4d7863637380]
-  - conda-forge::pytorch-lightning=1.4.0[md5=08af2f61a8b0949b0bf5dd294dc40414]
+  - conda-forge::pytorch-lightning=1.4.1[md5=41e4ee2aca6beb8425374cb6ae2d8a03]
+  - conda-forge::torchio=0.18.45[md5=03cd57b623a7ed8e41891079217c0579]

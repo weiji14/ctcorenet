@@ -5,10 +5,11 @@ channels:
   - pytorch
 dependencies:
   - conda-forge::black=21.7b0[md5=48f2030aa3fcd4652046d49f354085b7]
-  - conda-forge::jupyterlab=3.1.2[md5=37ef7d315aa980121b89cf82f40baaca]
-  - conda-forge::labelme=4.5.9[md5=e8171afd16a985a9ddfea082ad59b09d]
-  - conda-forge::pyqt=5.12.3[md5=7166890c160d0441f59973a40b74f6e5]
-  - conda-forge::python=3.8.10[md5=69f7d6ef1f00c3a109b1b06279e6d6a9]
-  - pytorch::pytorch=1.9.0[md5=ecab10144540d49a514f4d7863637380]
+  - nvidia::cudatoolkit=11.1.74[md5=7ef870174e8baed24f96824c49c24eb7]
+  - conda-forge::jupyterlab=3.1.4[md5=15f3fef512bc599f4c0798a888c6c563]
+  - conda-forge::labelme=4.5.9[md5=7549165aa34350ee128f106da5b5cf91]
+  - conda-forge::pyqt=5.9.2[md5=34034dd1d12bbfc07a6f5df12fb87264]
+  - conda-forge::python=3.7.10[md5=7425fffa658971915f595e9110163c3c]
+  - pytorch::pytorch=1.9.0[md5=775afa0ad97e146789d336c3a4510b83]
   - conda-forge::pytorch-lightning=1.4.1[md5=41e4ee2aca6beb8425374cb6ae2d8a03]
-  - conda-forge::torchio=0.18.45[md5=03cd57b623a7ed8e41891079217c0579]
+  - pytorch::torchvision=0.10.0[md5=9e55c1c798e0cef9556516d83650778d]

@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: labelme_json_to_dataset data/RS15-LC42\ xrays\ compiled/Cropped\ Xray\ 42/42-188.5-218.5.json
+      -o data/train/RS15-LC42_42-188.5-218.5/
+    deps:
+    - path: data/RS15-LC42 xrays compiled/Cropped Xray 42/42-188.5-218.5.json
+      md5: b6164832e63fabd9c170d85d9353cc2e
+      size: 441222
+    outs:
+    - path: data/train/RS15-LC42_42-188.5-218.5/img.png
+      md5: 230952bff0356f42c5665592efebb0cd
+      size: 1833421
+    - path: data/train/RS15-LC42_42-188.5-218.5/label.png
+      md5: a70dea55d8b6f4886576a3a3b846bd61
+      size: 14017
+    - path: data/train/RS15-LC42_42-188.5-218.5/label_names.txt
+      md5: 915f18c9bf5dc125201f92c599826a81
+      size: 17
+    - path: data/train/RS15-LC42_42-188.5-218.5/label_viz.png
+      md5: 4f09c4e11a559fdadb44e3327b7cf2df
+      size: 1471107

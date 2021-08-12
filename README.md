@@ -48,3 +48,15 @@ The model can be trained using the following command:
 
 This will load the image data stored in `data/train`, perform the training
 (minimize loss between img.png and label.png), and produce some outputs.
+
+### Reproducing the entire pipeline
+
+To easily manage the whole machine learning workflow, this project uses the
+data version control ([DVC](https://github.com/iterative/dvc/)) library which
+stores all the commands and input/intermediate/output data assets used. This
+makes it easy to reproduce the entire pipeline using a single command
+
+    dvc repro
+
+This command will perform all the data preparation and model training steps.
+For more information, see https://dvc.org/doc/start/data-pipelines.

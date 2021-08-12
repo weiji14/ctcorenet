@@ -20,3 +20,16 @@ stages:
     - path: data/train/RS15-LC42_42-188.5-218.5/label_viz.png
       md5: 4f09c4e11a559fdadb44e3327b7cf2df
       size: 1471107
+  train:
+    cmd: python ctcorenet/ctcorenet.py
+    deps:
+    - path: data/train/RS15-LC42_42-188.5-218.5/img.png
+      md5: 230952bff0356f42c5665592efebb0cd
+      size: 1833421
+    - path: data/train/RS15-LC42_42-188.5-218.5/label.png
+      md5: a70dea55d8b6f4886576a3a3b846bd61
+      size: 14017
+    outs:
+    - path: ctcorenet/ctcorenet_model.onnx
+      md5: 064a28f8836a486a6986bbdbe892d095
+      size: 2012

@@ -147,7 +147,7 @@ def cli_main():
         python ctcorenet/ctcorenet.py
 
     This will 1) load the data, 2) initialize the model, 3) train the model,
-    and 4) test the model.
+    4) test the model, and 5) export the model.
     """
     # Set a seed to control for randomness
     pl.seed_everything(42)
@@ -162,6 +162,13 @@ def cli_main():
     trainer = pl.Trainer(precision=16, gpus=1, max_epochs=3)  # GPU
     # trainer = pl.Trainer(max_epochs=3) # CPU
     trainer.fit(model=model, datamodule=ctcoredatamodule)
+
+    # Export Model to ONNX format
+    model.to_onnx(
+        file_path="ctcorenet/ctcorenet_model.onnx",
+        input_sample=torch.randn(1, 1, 512, 512),
+        export_params=False,
+    )
 
 
 if __name__ == "__main__":

@@ -9,3 +9,11 @@ stages:
     - data/train/RS15-LC42_42-188.5-218.5/label.png
     - data/train/RS15-LC42_42-188.5-218.5/label_names.txt
     - data/train/RS15-LC42_42-188.5-218.5/label_viz.png
+  train:
+    cmd: python ctcorenet/ctcorenet.py
+    deps:
+    - data/train/RS15-LC42_42-188.5-218.5/img.png
+    - data/train/RS15-LC42_42-188.5-218.5/label.png
+    outs:
+    - ctcorenet/ctcorenet_model.onnx:
+        cache: false

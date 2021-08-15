@@ -1,0 +1,19 @@
+stages:
+  prepare:
+    cmd: labelme_json_to_dataset data/RS15-LC42_xrays_compiled/Cropped_Xray_42/42-188.5-218.5.json
+      -o data/train/RS15-LC42_42-188.5-218.5/
+    deps:
+    - data/RS15-LC42_xrays_compiled/Cropped_Xray_42/42-188.5-218.5.json
+    outs:
+    - data/train/RS15-LC42_42-188.5-218.5/img.png
+    - data/train/RS15-LC42_42-188.5-218.5/label.png
+    - data/train/RS15-LC42_42-188.5-218.5/label_names.txt
+    - data/train/RS15-LC42_42-188.5-218.5/label_viz.png
+  train:
+    cmd: python ctcorenet/ctcorenet.py --deterministic=True --max_epochs=3
+    deps:
+    - data/train/RS15-LC42_42-188.5-218.5/img.png
+    - data/train/RS15-LC42_42-188.5-218.5/label.png
+    outs:
+    - ctcorenet/ctcorenet_model.onnx:
+        cache: false

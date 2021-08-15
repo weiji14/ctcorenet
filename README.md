@@ -49,6 +49,14 @@ The model can be trained using the following command:
 This will load the image data stored in `data/train`, perform the training
 (minimize loss between img.png and label.png), and produce some outputs.
 
+More advanced users can customize the training, e.g. to be more deterministic,
+running for only x epochs, train on a GPU using 16-bit precision, etc, like so:
+
+    python ctcorenet/ctcorenet.py --deterministic=True --max_epochs=3 --gpus=1 --precision=16
+
+More options to customize the training can be found by running
+`python ctcorenet/ctcorenet.py --help`.
+
 ### Reproducing the entire pipeline
 
 To easily manage the whole machine learning workflow, this project uses the

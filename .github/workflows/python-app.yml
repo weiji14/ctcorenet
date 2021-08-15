@@ -35,4 +35,12 @@ jobs:
         conda list
 
     - name: Code Quality
-      run: conda run black . --check
+      run: black . --check
+
+    - name: Pull test data from dvc remote
+      run: |
+        dvc pull
+        ls -lhR data/
+
+    - name: Test reproducibility of entire ML pipeline
+      run: dvc repro

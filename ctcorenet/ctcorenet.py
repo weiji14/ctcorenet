@@ -5,6 +5,7 @@ Code structure adapted from Pytorch Lightning project seed at
 https://github.com/PyTorchLightning/deep-learning-project-template
 """
 
+import argparse
 import glob
 import os
 import typing
@@ -149,6 +150,11 @@ def cli_main():
     This will 1) load the data, 2) initialize the model, 3) train the model,
     4) test the model, and 5) export the model.
     """
+    ## Parse arguments from command-line
+    parser = argparse.ArgumentParser()
+    parser = pl.Trainer.add_argparse_args(parent_parser=parser)
+    args = parser.parse_args()
+
     # Set a seed to control for randomness
     pl.seed_everything(42)
 
@@ -159,8 +165,7 @@ def cli_main():
     model = CTCoreNet()
 
     # Training
-    trainer = pl.Trainer(precision=16, gpus=1, max_epochs=3)  # GPU
-    # trainer = pl.Trainer(max_epochs=3) # CPU
+    trainer = pl.Trainer.from_argparse_args(args=args)
     trainer.fit(model=model, datamodule=ctcoredatamodule)
 
     # Export Model to ONNX format

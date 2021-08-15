@@ -1,2 +1,8 @@
-data/
+# Raw data tracked by dvc
+data/**
+!data/**/
+!data/**/*.dvc
+
+# Model logs and outputs
 lightning_logs/
+*.onnx

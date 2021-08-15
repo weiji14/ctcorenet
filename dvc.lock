@@ -1,10 +1,10 @@
 schema: '2.0'
 stages:
   prepare:
-    cmd: labelme_json_to_dataset data/RS15-LC42\ xrays\ compiled/Cropped\ Xray\ 42/42-188.5-218.5.json
+    cmd: labelme_json_to_dataset data/RS15-LC42_xrays_compiled/Cropped_Xray_42/42-188.5-218.5.json
       -o data/train/RS15-LC42_42-188.5-218.5/
     deps:
-    - path: data/RS15-LC42 xrays compiled/Cropped Xray 42/42-188.5-218.5.json
+    - path: data/RS15-LC42_xrays_compiled/Cropped_Xray_42/42-188.5-218.5.json
       md5: b6164832e63fabd9c170d85d9353cc2e
       size: 441222
     outs:
@@ -21,7 +21,7 @@ stages:
       md5: 4f09c4e11a559fdadb44e3327b7cf2df
       size: 1471107
   train:
-    cmd: python ctcorenet/ctcorenet.py
+    cmd: python ctcorenet/ctcorenet.py --deterministic=True --max_epochs=3
     deps:
     - path: data/train/RS15-LC42_42-188.5-218.5/img.png
       md5: 230952bff0356f42c5665592efebb0cd
@@ -31,5 +31,5 @@ stages:
       size: 14017
     outs:
     - path: ctcorenet/ctcorenet_model.onnx
-      md5: 064a28f8836a486a6986bbdbe892d095
-      size: 2012
+      md5: 0fe62ffba059a2874dc1a9df2ea3a01d
+      size: 630

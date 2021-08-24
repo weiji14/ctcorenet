@@ -7,12 +7,11 @@ dependencies:
   - conda-forge::black=21.7b0[md5=48f2030aa3fcd4652046d49f354085b7]
   - nvidia::cudatoolkit=11.1.74[md5=7ef870174e8baed24f96824c49c24eb7]
   - conda-forge::dvc=2.5.4[md5=2f0a44ed05f017edd3445a3bf63e02d4]
-  - conda-forge::jupyterlab=3.1.4[md5=15f3fef512bc599f4c0798a888c6c563]
+  - conda-forge::jupyterlab=3.1.8[md5=e45e11d357e4bc204495ed77bf10e32f]
   - conda-forge::labelme=4.5.9[md5=7549165aa34350ee128f106da5b5cf91]
+  - conda-forge::lightning-flash=0.4.0[md5=ca1a9c8d818f2c33006b59c853de0a0c]
   - conda-forge::pyqt=5.9.2[md5=34034dd1d12bbfc07a6f5df12fb87264]
   - conda-forge::python=3.7.10[md5=7425fffa658971915f595e9110163c3c]
   - pytorch::pytorch=1.9.0[md5=775afa0ad97e146789d336c3a4510b83]
-  - conda-forge::pytorch-lightning=1.4.1[md5=41e4ee2aca6beb8425374cb6ae2d8a03]
+  - conda-forge::pytorch-lightning=1.4.4[md5=4f07725174bed94b254ff55029310460]
   - pytorch::torchvision=0.10.0[md5=9e55c1c798e0cef9556516d83650778d]
-  - pip:
-    - lightning-flash[image]==0.4.0

@@ -1,17 +1,15 @@
 name: ctcorenet
 channels:
   - conda-forge
-  - nvidia
-  - pytorch
+  - nodefaults
 dependencies:
-  - conda-forge::black=21.7b0[md5=48f2030aa3fcd4652046d49f354085b7]
-  - nvidia::cudatoolkit=11.1.74[md5=7ef870174e8baed24f96824c49c24eb7]
-  - conda-forge::dvc=2.5.4[md5=2f0a44ed05f017edd3445a3bf63e02d4]
-  - conda-forge::jupyterlab=3.1.8[md5=e45e11d357e4bc204495ed77bf10e32f]
-  - conda-forge::labelme=4.5.9[md5=7549165aa34350ee128f106da5b5cf91]
-  - conda-forge::lightning-flash=0.4.0[md5=ca1a9c8d818f2c33006b59c853de0a0c]
-  - conda-forge::pyqt=5.9.2[md5=34034dd1d12bbfc07a6f5df12fb87264]
-  - conda-forge::python=3.7.10[md5=7425fffa658971915f595e9110163c3c]
-  - pytorch::pytorch=1.9.0[md5=775afa0ad97e146789d336c3a4510b83]
-  - conda-forge::pytorch-lightning=1.4.4[md5=4f07725174bed94b254ff55029310460]
-  - pytorch::torchvision=0.10.0[md5=9e55c1c798e0cef9556516d83650778d]
+  - conda-forge::black=21.8b0[md5=1e618e6228fc2c15ac2f3f68bd79657d]
+  - conda-forge::cudatoolkit=11.2.2[md5=aeab470cf4b6abad3af8ea015f88a3ca]
+  - conda-forge::dvc=2.5.4[md5=3c6e58b217b685788f7cdc7cd375483b]
+  - conda-forge::jupyterlab=3.1.10[md5=6807f9b73ecba944e6a91e1492346128]
+  - conda-forge::labelme=4.5.9[md5=e99f2ec68787a176cf91b4f421992e05]
+  - conda-forge::pyqt=5.12.3[md5=08e46ad97d4712558a52ae2ea6a92c8d]
+  - conda-forge::python=3.9.7[md5=50e1f2484bbd10a558e3fd5a3a83a436]
+  - conda-forge::pytorch-gpu=1.9.0[md5=5b6f536fe0ad1173dcb297abc64cebbe]
+  - conda-forge::pytorch-lightning=1.4.5[md5=20860c1bfc350eaf2a7e302e0ff0fdec]
+  - conda-forge::torchvision=0.10.0[md5=a57cc5d63c2380c9bf674fbf5dec1a46]

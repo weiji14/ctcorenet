@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - conda-forge::black=21.8b0[md5=1e618e6228fc2c15ac2f3f68bd79657d]
+  - conda-forge::codecarbon=1.2.0[md5=d50d5d031c00154c2996e2b8590f3972]
   - conda-forge::cudatoolkit=11.2.2[md5=aeab470cf4b6abad3af8ea015f88a3ca]
   - conda-forge::dvc=2.5.4[md5=3c6e58b217b685788f7cdc7cd375483b]
   - conda-forge::jupyterlab=3.1.10[md5=6807f9b73ecba944e6a91e1492346128]

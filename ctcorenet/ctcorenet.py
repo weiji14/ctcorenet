@@ -49,7 +49,7 @@ class CTCoreNet(pl.LightningModule):
         x = self.output_conv(x)
         return x
 
-    def training_step(self, batch, batch_idx) -> float:
+    def training_step(self, batch, batch_idx) -> torch.Tensor:
         """
         Logic for the neural network's training loop.
 
@@ -58,11 +58,33 @@ class CTCoreNet(pl.LightningModule):
         2. Pass the image through the neural network to get a predicted label
         3. Calculate the loss between the predicted label and groundtruth label
         """
-        image = batch[0][:, 0:1, :, :].float()  # Input CT Core image
-        label = batch[0][:, 1:2, :, :].float()  # Classified pixel labels
+        # image, label = batch  # x is the tensor, y is the label
+        image: torch.Tensor = batch[0][:, 0:1, :, :]  # Input CT Core image
+        label: torch.Tensor = batch[0][:, 1:2, :, :]  # Classified pixel labels
 
-        logits = self(image)  # pass the image through the neural network model
-        loss = F.binary_cross_entropy_with_logits(input=logits, target=label)
+        logits: torch.Tensor = self(image)  # pass image through neural network
+        loss: torch.Tensor = F.binary_cross_entropy_with_logits(
+            input=logits, target=label
+        )
+
+        # Log loss value and images to Tensorboard
+        self.logger.experiment.add_scalar(
+            tag="Loss", scalar_value=loss, global_step=self.global_step
+        )
+        logit_grid: torch.Tensor = torchvision.utils.make_grid(tensor=logits)
+        self.logger.experiment.add_image(
+            tag="logit", img_tensor=logit_grid, global_step=self.global_step
+        )
+        if self.global_step == 0:
+            label_grid: torch.Tensor = torchvision.utils.make_grid(tensor=label)
+            self.logger.experiment.add_image(
+                tag="label", img_tensor=label_grid, global_step=self.global_step
+            )
+            image_grid: torch.Tensor = torchvision.utils.make_grid(tensor=image)
+            self.logger.experiment.add_image(
+                tag="image", img_tensor=image_grid, global_step=self.global_step
+            )
+
         return loss
 
     def configure_optimizers(self):
@@ -81,6 +103,12 @@ class CTCoreNet(pl.LightningModule):
 class CTCoreData(pl.LightningDataModule):
     """
     Data preparation code to load the CT Core image data into Python.
+    Specifically, sediment cores from Ross Sea, Antarctica drilled in 2015
+    RS15-LC42 and RS15-LC48.
+
+    References:
+    - https://doi.org/10.1594/PANGAEA.920653
+    - https://doi.org/doi:10.22663/KOPRI-KPDC-00000518.1
 
     This is a reusable Pytorch Lightning Data Module with a custom Dataset. See
     https://pytorch-lightning.readthedocs.io/en/1.4.1/extensions/datamodules.html
@@ -121,12 +149,18 @@ class CTCoreData(pl.LightningDataModule):
             # print(image_and_label.shape)
 
             # Ensure standard tensor size
-            crop_transform = torchvision.transforms.FiveCrop(size=(256, 256))
-            self.images_and_labels.extend(crop_transform(image_and_label))
+            five_crop_transform = torchvision.transforms.FiveCrop(size=(256, 256))
+            self.images_and_labels.extend(five_crop_transform(image_and_label))
+            random_crop_transform = torchvision.transforms.RandomCrop(
+                size=(256, 256), padding_mode="symmetric"
+            )
+            self.images_and_labels.extend(
+                [random_crop_transform(image_and_label) for _ in range(123)]
+            )
 
         # Create a proper Pytorch Dataset from tuple of (image, label)
         self.dataset = torch.utils.data.TensorDataset(
-            torch.stack(tensors=self.images_and_labels)
+            torch.stack(tensors=self.images_and_labels).float()
         )
         return self.dataset
 
@@ -135,7 +169,7 @@ class CTCoreData(pl.LightningDataModule):
         Loads the data used in the training loop.
         Set the training batch size here too.
         """
-        return torch.utils.data.DataLoader(dataset=self.dataset, batch_size=2)
+        return torch.utils.data.DataLoader(dataset=self.dataset, batch_size=32)
 
 
 def cli_main():
@@ -149,6 +183,15 @@ def cli_main():
 
     This will 1) load the data, 2) initialize the model, 3) train the model,
     4) test the model, and 5) export the model.
+
+    To train the model for 3 epochs on a GPU with CUDNN deterministic and
+    floating point 16-bit mode enabled, use the following command:
+
+        python ctcorenet/ctcorenet.py --max_epochs=3 \
+               --gpus=1 --deterministic=True --precision=16
+
+    More options can be found by using `python ctcorenet/ctcorenet.py --help`.
+    Happy training!
     """
     ## Parse arguments from command-line
     parser = argparse.ArgumentParser()
@@ -173,6 +216,7 @@ def cli_main():
         file_path="ctcorenet/ctcorenet_model.onnx",
         input_sample=torch.randn(1, 1, 512, 512),
         export_params=False,
+        opset_version=11,
     )
 
 

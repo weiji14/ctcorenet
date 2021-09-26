@@ -12,6 +12,7 @@ import typing
 
 import pytorch_lightning as pl
 import torch
+import torchmetrics
 import torchvision
 from torch.nn import functional as F
 
@@ -32,21 +33,40 @@ class CTCoreNet(pl.LightningModule):
         """
         super().__init__()
 
-        self.conv_layer1 = torch.nn.Conv2d(
-            in_channels=1, out_channels=32, kernel_size=3, padding=1  # 'same' padding
+        # self.conv_layer1 = torch.nn.Conv2d(
+        #     in_channels=1, out_channels=3, kernel_size=3, padding=1  # 'same' padding
+        # )
+
+        # Unet model
+        # https://github.com/mateuszbuda/brain-segmentation-pytorch#pytorch-hub
+        self.unet = torch.hub.load(
+            repo_or_dir="mateuszbuda/brain-segmentation-pytorch:8ef2e2d423b67b53ec8113fc71a9b968bb0f66e7",
+            model="unet",
+            in_channels=1,
+            out_channels=1,  # binary classification
+            init_features=32,
+            pretrained=False,
         )
-        self.output_conv = torch.nn.Conv2d(32, 1, 1, 1)
+
+        # self.output_conv = torch.nn.Conv2d(32, 1, 1, 1)
+
+        # Intersection over Union (IoU) metric
+        self.iou = torchmetrics.IoU(num_classes=2)
 
     def forward(self, x) -> torch.Tensor:
         """
         Forward pass (Inference/Prediction).
         """
         # Pass tensor through Convolutional Layers
-        x = self.conv_layer1(x)
-        x = F.leaky_relu(x)
+        # x = self.conv_layer1(x)
+        # x = F.leaky_relu(x)
 
-        # Final output convolution
-        x = self.output_conv(x)
+        # Pass tensors through Unet
+        x = self.unet(x)
+
+        # # Final output convolution
+        # x = self.output_conv(x)
+
         return x
 
     def training_step(self, batch, batch_idx) -> torch.Tensor:
@@ -57,19 +77,35 @@ class CTCoreNet(pl.LightningModule):
         1. Get the image and corresponding groundtruth label from each batch
         2. Pass the image through the neural network to get a predicted label
         3. Calculate the loss between the predicted label and groundtruth label
+
+        Using the focal loss from RetinaNet, with tunable parameters alpha and
+        gamma.
+
+        Reference:
+        - Lin, T.-Y., Goyal, P., Girshick, R., He, K., & Dollár, P. (2018).
+          Focal Loss for Dense Object Detection. ArXiv:1708.02002 [Cs].
+          https://arxiv.org/abs/1708.02002
         """
         # image, label = batch  # x is the tensor, y is the label
         image: torch.Tensor = batch[0][:, 0:1, :, :]  # Input CT Core image
         label: torch.Tensor = batch[0][:, 1:2, :, :]  # Classified pixel labels
 
         logits: torch.Tensor = self(image)  # pass image through neural network
-        loss: torch.Tensor = F.binary_cross_entropy_with_logits(
-            input=logits, target=label
+        loss: torch.Tensor = torchvision.ops.sigmoid_focal_loss(
+            inputs=logits,
+            targets=label,
+            alpha=0.75,  # 0.5
+            gamma=2,  # 7
+            reduction="mean",
         )
+        iou = self.iou(preds=logits, target=label.to(dtype=torch.uint8))
 
         # Log loss value and images to Tensorboard
         self.logger.experiment.add_scalar(
             tag="Loss", scalar_value=loss, global_step=self.global_step
+        )
+        self.logger.experiment.add_scalar(
+            tag="IoU", scalar_value=iou, global_step=self.global_step
         )
         logit_grid: torch.Tensor = torchvision.utils.make_grid(tensor=logits)
         self.logger.experiment.add_image(
@@ -97,7 +133,7 @@ class CTCoreNet(pl.LightningModule):
         - Kingma, D. P., & Ba, J. (2017). Adam: A Method for Stochastic
           Optimization. ArXiv:1412.6980 [Cs]. http://arxiv.org/abs/1412.6980
         """
-        return torch.optim.Adam(params=self.parameters(), lr=0.001)
+        return torch.optim.Adam(params=self.parameters(), lr=0.01)
 
 
 class CTCoreData(pl.LightningDataModule):
@@ -184,11 +220,16 @@ def cli_main():
     This will 1) load the data, 2) initialize the model, 3) train the model,
     4) test the model, and 5) export the model.
 
-    To train the model for 3 epochs on a GPU with CUDNN deterministic and
-    floating point 16-bit mode enabled, use the following command:
+    To train the model for 3 epochs on a single GPU, use the following command:
 
-        python ctcorenet/ctcorenet.py --max_epochs=3 \
-               --gpus=1 --deterministic=True --precision=16
+        python ctcorenet/ctcorenet.py --max_epochs=3 --gpus=1
+
+    To train the model on 2 GPUs using Distributed Data Parallel (DDP)
+    processing, with CUDNN deterministic and floating point 16 mode enabled,
+    try doing something like this:
+
+        python ctcorenet/ctcorenet.py --max_epochs=3 --gpus=2
+               --accelerator=ddp --deterministic=True --precision=16
 
     More options can be found by using `python ctcorenet/ctcorenet.py --help`.
     Happy training!

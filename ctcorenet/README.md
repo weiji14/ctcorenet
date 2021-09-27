@@ -6,4 +6,5 @@ reproducibility, the code is structured using the
 [Pytorch Lightning](https://www.pytorchlightning.ai) framework and based on
 https://github.com/PyTorchLightning/deep-learning-project-template.
 
-- :spider_web: ctcoreunet.py - Code containing Neural Network model architecture and data loading modules
+- :card_file_box: ctcoredata.py - Code containing CT Core image data loading modules
+- :spider_web: ctcoreunet.py - Code containing Neural Network model architecture

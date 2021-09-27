@@ -215,23 +215,23 @@ def cli_main():
 
     The script can be executed in the terminal using:
 
-        python ctcorenet/ctcorenet.py
+        python ctcorenet/ctcoreunet.py
 
     This will 1) load the data, 2) initialize the model, 3) train the model,
     4) test the model, and 5) export the model.
 
     To train the model for 3 epochs on a single GPU, use the following command:
 
-        python ctcorenet/ctcorenet.py --max_epochs=3 --gpus=1
+        python ctcorenet/ctcoreunet.py --max_epochs=3 --gpus=1
 
     To train the model on 2 GPUs using Distributed Data Parallel (DDP)
     processing, with CUDNN deterministic and floating point 16 mode enabled,
     try doing something like this:
 
-        python ctcorenet/ctcorenet.py --max_epochs=3 --gpus=2
+        python ctcorenet/ctcoreunet.py --max_epochs=3 --gpus=2
                --accelerator=ddp --deterministic=True --precision=16
 
-    More options can be found by using `python ctcorenet/ctcorenet.py --help`.
+    More options can be found by using `python ctcorenet/ctcoreunet.py --help`.
     Happy training!
     """
     ## Parse arguments from command-line

@@ -21,7 +21,7 @@ stages:
       md5: 4f09c4e11a559fdadb44e3327b7cf2df
       size: 1471107
   train:
-    cmd: python ctcorenet/ctcorenet.py --deterministic=True --max_epochs=3
+    cmd: python ctcorenet/ctcoreunet.py --deterministic=True --max_epochs=1
     deps:
     - path: data/train/RS15-LC42_42-188.5-218.5/img.png
       md5: 230952bff0356f42c5665592efebb0cd

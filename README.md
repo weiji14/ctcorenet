@@ -44,7 +44,7 @@ This will produce a folder named CORE_42 containing 4 files:
 
 The model can be trained using the following command:
 
-    python ctcorenet/ctcorenet.py
+    python ctcorenet/ctcoreunet.py
 
 This will load the image data stored in `data/train`, perform the training
 (minimize loss between img.png and label.png), and produce some outputs.
@@ -52,10 +52,10 @@ This will load the image data stored in `data/train`, perform the training
 More advanced users can customize the training, e.g. to be more deterministic,
 running for only x epochs, train on a GPU using 16-bit precision, etc, like so:
 
-    python ctcorenet/ctcorenet.py --deterministic=True --max_epochs=3 --gpus=1 --precision=16
+    python ctcorenet/ctcoreunet.py --deterministic=True --max_epochs=3 --gpus=1 --precision=16
 
 More options to customize the training can be found by running
-`python ctcorenet/ctcorenet.py --help`.
+`python ctcorenet/ctcoreunet.py --help`.
 
 ### Reproducing the entire pipeline
 

@@ -10,7 +10,7 @@ stages:
     - data/train/RS15-LC42_42-188.5-218.5/label_names.txt
     - data/train/RS15-LC42_42-188.5-218.5/label_viz.png
   train:
-    cmd: python ctcorenet/ctcorenet.py --deterministic=True --max_epochs=3
+    cmd: python ctcorenet/ctcoreunet.py --deterministic=True --max_epochs=1
     deps:
     - data/train/RS15-LC42_42-188.5-218.5/img.png
     - data/train/RS15-LC42_42-188.5-218.5/label.png

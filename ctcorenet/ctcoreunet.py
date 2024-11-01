@@ -6,14 +6,12 @@ https://github.com/PyTorchLightning/deep-learning-project-template
 """
 
 import argparse
-import typing
 
-import pytorch_lightning as pl
+import lightning.pytorch as pl
 import torch
 import torchmetrics
 import torchvision
 from ctcoredata import CTCoreDataModule
-from torch.nn import functional as F
 
 torch.use_deterministic_algorithms(mode=True)
 
@@ -39,18 +37,19 @@ class CTCoreNet(pl.LightningModule):
         # Unet model
         # https://github.com/mateuszbuda/brain-segmentation-pytorch#pytorch-hub
         self.unet = torch.hub.load(
-            repo_or_dir="mateuszbuda/brain-segmentation-pytorch:8ef2e2d423b67b53ec8113fc71a9b968bb0f66e7",
+            repo_or_dir="mateuszbuda/brain-segmentation-pytorch:v1.0",
             model="unet",
             in_channels=1,
             out_channels=1,  # binary classification
             init_features=32,
             pretrained=False,
+            trust_repo="check",
         )
 
         # self.output_conv = torch.nn.Conv2d(32, 1, 1, 1)
 
         # Intersection over Union (IoU) metric
-        self.iou = torchmetrics.IoU(num_classes=2)
+        self.iou = torchmetrics.JaccardIndex(task="binary", num_classes=2)
 
     def forward(self, x) -> torch.Tensor:
         """
@@ -135,7 +134,7 @@ class CTCoreNet(pl.LightningModule):
         return torch.optim.Adam(params=self.parameters(), lr=0.01)
 
 
-def cli_main():
+def cli_main(hparams):
     """
     Command line interface to run the CTCoreNet model. Based on
     https://github.com/PyTorchLightning/deep-learning-project-template
@@ -161,11 +160,6 @@ def cli_main():
     More options can be found by using `python ctcorenet/ctcoreunet.py --help`.
     Happy training!
     """
-    ## Parse arguments from command-line
-    parser = argparse.ArgumentParser()
-    parser = pl.Trainer.add_argparse_args(parent_parser=parser)
-    args = parser.parse_args()
-
     # Set a seed to control for randomness
     pl.seed_everything(42)
 
@@ -176,7 +170,13 @@ def cli_main():
     model = CTCoreNet()
 
     # Training
-    trainer = pl.Trainer.from_argparse_args(args=args)
+    trainer = pl.Trainer(
+        accelerator=hparams.accelerator,
+        deterministic=hparams.deterministic,
+        max_epochs=hparams.max_epochs,
+        devices=hparams.devices,
+        precision=hparams.precision,
+    )
     trainer.fit(model=model, datamodule=ctcoredatamodule)
 
     # Export Model to ONNX format
@@ -189,4 +189,13 @@ def cli_main():
 
 
 if __name__ == "__main__":
-    cli_main()
+    ## Parse arguments from command-line
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--accelerator", default="auto")  # "gpu" or "mps" (mac M1 chip)
+    parser.add_argument("--deterministic", default=None)
+    parser.add_argument("--max_epochs", default=3, type=int)
+    parser.add_argument("--devices", default="auto")
+    parser.add_argument("--precision", default=None)
+    args = parser.parse_args()
+
+    cli_main(args)

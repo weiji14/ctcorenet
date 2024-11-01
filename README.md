@@ -72,9 +72,9 @@ This will load the image data stored in `data/train`, perform the training
 (minimize loss between img.png and label.png), and produce some outputs.
 
 More advanced users can customize the training, e.g. to be more deterministic,
-running for only x epochs, train on a GPU using 16-bit precision, etc, like so:
+running for only x epochs, train on an CUDA GPU using 16-bit precision, etc, like so:
 
-    python ctcorenet/ctcoreunet.py --deterministic=True --max_epochs=3 --gpus=1 --precision=16
+    python ctcorenet/ctcoreunet.py --deterministic=True --max_epochs=3 --accelerator=gpu --devices=1 --precision=16
 
 More options to customize the training can be found by running
 `python ctcorenet/ctcoreunet.py --help`.
@@ -86,6 +86,7 @@ data version control ([DVC](https://github.com/iterative/dvc/)) library which
 stores all the commands and input/intermediate/output data assets used. This
 makes it easy to reproduce the entire pipeline using a single command
 
+    dvc pull
     dvc repro
 
 This command will perform all the data preparation and model training steps.

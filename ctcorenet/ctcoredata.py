@@ -8,7 +8,7 @@ import glob
 import os
 import typing
 
-import pytorch_lightning as pl
+import lightning.pytorch as pl
 import torch
 import torchvision
 from torch.nn import functional as F

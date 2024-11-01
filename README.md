@@ -11,9 +11,31 @@ Neural network for classifying rock clasts in computed tomography (CT) scans of 
 
 ## Quickstart
 
-Launch in [Pangeo Binder](https://pangeo-binder.readthedocs.io) (Interactive jupyter lab environment in the cloud).
+Launch in [Binder](https://mybinder.readthedocs.io/en/latest/index.html) (Interactive jupyter lab environment in the cloud).
 
-[![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/weiji14/ctcorenet/main)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/weiji14/ctcorenet/main)
+
+## Installation
+
+To help out with development, start by cloning this [repo-url](/../../)
+
+    git clone <repo-url>
+
+Then I recommend
+[using conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+to install the dependencies. The conda virtual environment will also be created with
+Python and [JupyterLab](https://github.com/jupyterlab/jupyterlab) installed.
+
+    cd ctcorenet
+    conda env create --file=environment.yml --solver=libmamba
+
+Activate the virtual environment first.
+
+    conda activate ctcorenet
+
+Finally, double-check that the libraries have been installed.
+
+    conda list
 
 ## Usage
 

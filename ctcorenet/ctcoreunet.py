@@ -43,7 +43,7 @@ class CTCoreNet(pl.LightningModule):
             out_channels=1,  # binary classification
             init_features=32,
             pretrained=False,
-            trust_repo="check",
+            trust_repo=True,
         )
 
         # self.output_conv = torch.nn.Conv2d(32, 1, 1, 1)

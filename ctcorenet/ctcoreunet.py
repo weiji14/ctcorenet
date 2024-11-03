@@ -99,25 +99,26 @@ class CTCoreNet(pl.LightningModule):
         iou = self.iou(preds=logits, target=label.to(dtype=torch.uint8))
 
         # Log loss value and images to Tensorboard
-        self.logger.experiment.add_scalar(
-            tag="Loss", scalar_value=loss, global_step=self.global_step
-        )
-        self.logger.experiment.add_scalar(
-            tag="IoU", scalar_value=iou, global_step=self.global_step
-        )
-        logit_grid: torch.Tensor = torchvision.utils.make_grid(tensor=logits)
-        self.logger.experiment.add_image(
-            tag="logit", img_tensor=logit_grid, global_step=self.global_step
-        )
-        if self.global_step == 0:
-            label_grid: torch.Tensor = torchvision.utils.make_grid(tensor=label)
-            self.logger.experiment.add_image(
-                tag="label", img_tensor=label_grid, global_step=self.global_step
+        if self.logger is not None and hasattr(self.logger.experiment, "add_scalar"):
+            self.logger.experiment.add_scalar(
+                tag="Loss", scalar_value=loss, global_step=self.global_step
             )
-            image_grid: torch.Tensor = torchvision.utils.make_grid(tensor=image)
-            self.logger.experiment.add_image(
-                tag="image", img_tensor=image_grid, global_step=self.global_step
+            self.logger.experiment.add_scalar(
+                tag="IoU", scalar_value=iou, global_step=self.global_step
             )
+            logit_grid: torch.Tensor = torchvision.utils.make_grid(tensor=logits)
+            self.logger.experiment.add_image(
+                tag="logit", img_tensor=logit_grid, global_step=self.global_step
+            )
+            if self.global_step == 0:
+                label_grid: torch.Tensor = torchvision.utils.make_grid(tensor=label)
+                self.logger.experiment.add_image(
+                    tag="label", img_tensor=label_grid, global_step=self.global_step
+                )
+                image_grid: torch.Tensor = torchvision.utils.make_grid(tensor=image)
+                self.logger.experiment.add_image(
+                    tag="image", img_tensor=image_grid, global_step=self.global_step
+                )
 
         return loss
 
@@ -176,6 +177,7 @@ def cli_main(hparams):
         max_epochs=hparams.max_epochs,
         devices=hparams.devices,
         precision=hparams.precision,
+        logger=hparams.logger,
     )
     trainer.fit(model=model, datamodule=ctcoredatamodule)
 
@@ -196,6 +198,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_epochs", default=3, type=int)
     parser.add_argument("--devices", default="auto")
     parser.add_argument("--precision", default=None)
+    parser.add_argument("--logger", default=None)  # or True for TensorBoardLogger
     args = parser.parse_args()
 
     cli_main(args)

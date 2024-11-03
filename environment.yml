@@ -1,15 +1,14 @@
 name: ctcorenet
 channels:
   - conda-forge
+  - nodefaults
 dependencies:
-  - conda-forge::black=21.8b0[md5=1e618e6228fc2c15ac2f3f68bd79657d]
-  - conda-forge::codecarbon=1.2.0[md5=d50d5d031c00154c2996e2b8590f3972]
-  - nvidia::cudatoolkit=11.1.1[md5=7cf077c0719d68e5467ab8faff0cf8d1]
-  - conda-forge::dvc=2.5.4[md5=3c6e58b217b685788f7cdc7cd375483b]
-  - conda-forge::jupyterlab=3.1.10[md5=6807f9b73ecba944e6a91e1492346128]
-  - conda-forge::labelme=4.5.9[md5=e99f2ec68787a176cf91b4f421992e05]
-  - main::pyqt=5.9.2[md5=3eda4bcc31b66fd5002817def97cd129]
-  - conda-forge::python=3.9.7[md5=50e1f2484bbd10a558e3fd5a3a83a436]
-  - pytorch::pytorch=1.9.1[md5=00a69e75b48b9fc8bbffc2b67bb2ebef]
-  - conda-forge::pytorch-lightning=1.4.8[md5=6642a470ca35e7cbb065e7b3a02600c6]
-  - pytorch::torchvision=0.10.1[md5=f380743af92d590ec006aa3e3985aa7d]
+  - dvc~=3.56.0
+  - jupyterlab~=4.3.0
+  - labelme~=5.2.1
+  - onnx~=1.17.0
+  - pyqt~=5.15.9
+  - python=3.11
+  - pytorch~=2.4.1
+  - lightning~=2.4.0
+  - torchvision~=0.19.1

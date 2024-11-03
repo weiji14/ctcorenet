@@ -7,6 +7,8 @@ Neural network for classifying rock clasts in computed tomography (CT) scans of 
 [![Test CTCoreNet](https://github.com/weiji14/ctcorenet/actions/workflows/python-app.yml/badge.svg)](https://github.com/weiji14/ctcorenet/actions/workflows/python-app.yml)
 ![License](https://img.shields.io/github/license/weiji14/ctcorenet)
 
+![CT scan of sediment core with Ice-Rafted Debris (IRD) clasts highlighted in red](https://dagshub.com/weiji14/ctcorenet/raw/5a59d8f3c7f2d7b9a7bae50f4362b95994c34972/data/train/RS15-LC42_42-188.5-218.5/label_viz.png)
+
 # Getting started
 
 ## Quickstart
@@ -72,7 +74,7 @@ This will load the image data stored in `data/train`, perform the training
 (minimize loss between img.png and label.png), and produce some outputs.
 
 More advanced users can customize the training, e.g. to be more deterministic,
-running for only x epochs, train on an CUDA GPU using 16-bit precision, etc, like so:
+running for only x epochs, train on a CUDA GPU using 16-bit precision, etc, like so:
 
     python ctcorenet/ctcoreunet.py --deterministic=True --max_epochs=3 --accelerator=gpu --devices=1 --precision=16
 
